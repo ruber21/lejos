@@ -13,6 +13,8 @@ import lejos.util.PilotProps;
 
 public class SigueLinea {
 	
+	private static int lightSens = 42; 
+	
 	public static void main(String[] args) throws Exception{
 		PilotProps pp = new PilotProps();
 		pp.loadPersistentValues();
@@ -29,18 +31,18 @@ public class SigueLinea {
 		
 		final LightSensor luz = new LightSensor(SensorPort.S3);
 
-		piloto.setRotateSpeed(180);
+		piloto.setRotateSpeed(30);
 		
 		Behavior Avanza = new Behavior() {
 			public boolean takeControl() {
-				return luz.readValue() <= 42;
+				return luz.readValue() <= lightSens;
 			}
 			public void suppress() {
 				piloto.stop();
 			}
 			public void action() {
 				piloto.forward();
-				while(luz.readValue() <= 42)
+				while(luz.readValue() <= lightSens)
 					Thread.yield();
 			}
 		};
@@ -48,10 +50,14 @@ public class SigueLinea {
 		Behavior fueraLinea = new Behavior() {
 			public boolean suppress = false;
 			public boolean takeControl() {
-				return luz.readValue() > 42;
+				if(Button.ESCAPE.isDown())
+					return true;
+				return luz.readValue() > lightSens;
 			}
 			public void suppress() {
 				suppress = true;
+				if(Button.ESCAPE.isDown())
+					return;
 			}
 			public void action() {
 				int barrido = 10;
@@ -64,13 +70,18 @@ public class SigueLinea {
 				}
 				piloto.stop();
 				suppress = false;
+				if(Button.ESCAPE.isDown())
+					return;
 			}
 		};
 		
 		Behavior[] inicializa = {fueraLinea, Avanza};
 		LCD.drawString("Sigue Lineas", 0, 1);
 		Button.waitForAnyPress();
-		(new Arbitrator(inicializa)).start();
+		Arbitrator ar = new Arbitrator(inicializa);
+		ar.start();
+		
+		
 		
 	}
 }

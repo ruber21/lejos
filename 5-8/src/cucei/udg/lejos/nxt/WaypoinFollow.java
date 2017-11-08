@@ -17,7 +17,7 @@ public class WaypoinFollow {
 		System.out.println("Any button to start");
 		Button.waitForAnyPress();
 		
-		DifferentialPilot pilot = new DifferentialPilot(5.5f, 16f, Motor.A, Motor.B);
+		DifferentialPilot pilot = new DifferentialPilot(5.5f, 16f, Motor.B, Motor.C);
 		OdometryPoseProvider poseP = new OdometryPoseProvider(pilot);
 		pilot.addMoveListener(poseP);
 		Navigator wpNav = new Navigator(pilot);
@@ -33,8 +33,8 @@ public class WaypoinFollow {
 		while(wpNav.isMoving()) {
 			wpts = wpNav.getWaypoint();
 			LCD.clear();
-			System.out.println("Moving to waypoint: ");
-			System.out.println(wpts);
+			System.out.println("Moving to waypoint: " + wpts);
+			//System.out.println(wpts);
 		}
 		
 		Pose poseC = poseP.getPose();

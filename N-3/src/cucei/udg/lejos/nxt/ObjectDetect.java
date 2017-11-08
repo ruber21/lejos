@@ -9,7 +9,7 @@ public class ObjectDetect implements FeatureListener{
 	public static void main(String[] args) throws Exception{
 		
 		ObjectDetect od = new ObjectDetect();
-		UltrasonicSensor us = new UltrasonicSensor(SensorPort.S1);
+		UltrasonicSensor us = new UltrasonicSensor(SensorPort.S4);
 		RangeFeatureDetector fd = new RangeFeatureDetector(us, MaxRange, 500);
 		fd.addListener(od);
 		Button.ENTER.waitForPressAndRelease();

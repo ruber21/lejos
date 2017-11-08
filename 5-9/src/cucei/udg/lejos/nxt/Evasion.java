@@ -10,7 +10,7 @@ import lejos.robotics.subsumption.Behavior;
 
 public class Evasion {
 	
-	static DifferentialPilot pilot = new DifferentialPilot(5.5f, 16f, Motor.A, Motor.B);
+	static DifferentialPilot pilot = new DifferentialPilot(5.5f, 16f, Motor.B, Motor.C);
 	static UltrasonicSensor us = new UltrasonicSensor(SensorPort.S1);
 	static Pose pose = new Pose();
 	static OdometryPoseProvider pp = new OdometryPoseProvider(pilot);
@@ -105,7 +105,7 @@ public class Evasion {
 			else 
 			{
 				pilot.rotate(90);
-				pilot.arc(radius, -180);
+				pilot.arc(-radius, -180);
 			}
 			
 			start = false;
